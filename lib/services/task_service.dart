@@ -28,7 +28,7 @@ class TaskService {
   Stream<List<TaskModel>> getTasks() {
     return _taskCollection
         .where('userId', isEqualTo: currentUserId)
-        .orderBy('createdAt', descending: true)
+        .where('status', isEqualTo: 'Pending')
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -40,11 +40,32 @@ class TaskService {
     });
   }
 
+Stream<List<TaskModel>> getCompletedTasks() {
+  return _taskCollection
+      .where('userId', isEqualTo: currentUserId)
+      .where('status', isEqualTo: 'Completed')
+      .snapshots()
+      .map((snapshot) {
+    return snapshot.docs.map((doc) {
+      return TaskModel.fromMap(
+        doc.data() as Map<String, dynamic>,
+        doc.id,
+      );
+    }).toList();
+  });
+}
+
   Future<void> updateTask(TaskModel task) async {
     await _taskCollection
         .doc(task.id)
         .update(task.toMap());
   }
+
+Future<void> markTaskCompleted(TaskModel task) async {
+  await _taskCollection.doc(task.id).update({
+    'status': 'Completed',
+  });
+}
 
   Future<void> deleteTask(String id) async {
     await _taskCollection.doc(id).delete();

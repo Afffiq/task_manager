@@ -157,7 +157,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     email: emailController.text,
     password: passwordController.text,
   );
-
+  if (!mounted) return;
+  
   if (error != null) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(error)),

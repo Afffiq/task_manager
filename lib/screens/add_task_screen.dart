@@ -277,7 +277,7 @@ Widget build(BuildContext context) {
 
       // Priority
       DropdownButtonFormField<String>(
-        value: priority,
+        initialValue: priority,
         decoration: const InputDecoration(
           labelText: 'Priority',
           border: OutlineInputBorder(),

@@ -187,6 +187,24 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
 
     IconButton(
+  icon: const Icon(
+    Icons.check_circle,
+    color: Colors.green,
+  ),
+  onPressed: () async {
+  await taskService.markTaskCompleted(task);
+
+  if (!mounted) return;
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(
+      content: Text("Task marked as completed"),
+    ),
+  );
+},
+),
+
+    IconButton(
       icon: const Icon(
         Icons.edit,
         color: Colors.blue,
