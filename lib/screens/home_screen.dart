@@ -23,41 +23,62 @@ class _HomeScreenState extends State<HomeScreen> {
       title: const Text('Task Manager'),
       centerTitle: true,
       actions: [
-        IconButton(
-          icon: const Icon(Icons.logout),
-          onPressed: () async {
-  final confirm = await showDialog<bool>(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text("Logout"),
-        content: const Text(
-          "Are you sure you want to logout?",
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context, false);
-            },
-            child: const Text("Cancel"),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context, true);
-            },
-            child: const Text("Logout"),
-          ),
-        ],
-      );
-    },
-  );
+  Padding(
+    padding: const EdgeInsets.only(right: 10),
+    child: TextButton.icon(
+      onPressed: () async {
+        final confirm = await showDialog<bool>(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text("Logout"),
+              content: const Text(
+                "Are you sure you want to logout?",
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, false);
+                  },
+                  child: const Text("Cancel"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context, true);
+                  },
+                  child: const Text("Logout"),
+                ),
+              ],
+            );
+          },
+        );
 
-  if (confirm == true) {
-    await authService.logout();
-  }
-},
+        if (confirm == true) {
+          await authService.logout();
+        }
+      },
+      icon: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: const BoxDecoration(
+          color: Colors.red,
+          shape: BoxShape.circle,
         ),
-      ],
+        child: const Icon(
+          Icons.logout,
+          color: Colors.white,
+          size: 18,
+        ),
+      ),
+      label: const Text(
+        "Logout",
+        style: TextStyle(
+          color: Colors.red,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
+  ),
+],
     ),
     body: StreamBuilder<List<TaskModel>>(
   stream: taskService.getTasks(),
